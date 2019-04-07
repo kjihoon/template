@@ -10,6 +10,7 @@ import com.template.common.util.JsonUtil;
 import com.template.mybatis.mapper.TestMapper;
 import com.template.test.model.Test;
 
+import ch.qos.logback.classic.Logger;
 import net.minidev.json.JSONArray;
 
 @RestController
@@ -19,10 +20,7 @@ public class MainContoller {
 	TestMapper testMapper;
 	
 	
-	@GetMapping("/")
-	public String index() {
-		return "index";
-	}
+	
 	@GetMapping("/json/main/xss")
 	public String xss(String tmp) {
 		return tmp;
@@ -30,14 +28,19 @@ public class MainContoller {
 	@GetMapping("/selectAll")
 	public String selectAll() {
 		List<Test> list = testMapper.getTestListAll();
-		
+		while(true) {
+			if (list.isEmpty()) {
+				System.out.println("sdfsdfsdfsdfsdfsds");
+				break;
+			}
+		}
 		return JsonUtil.toJsonString(list);
 	}
 	
 	@GetMapping("/selectList")
 	public String getTestList() {
-		Test test = new Test();
-		test.setTmp("3");
+		Test test=  new Test();
+		test.setTmp("&");
 		List<Test> list = testMapper.getTestList(test);
 		return JsonUtil.toJsonString(list);
 	}
@@ -45,8 +48,8 @@ public class MainContoller {
 	@GetMapping("/securiySHA")
 	public String security() {
 		
-		
-		
 		return "";
 	}
+	
+	
 }
